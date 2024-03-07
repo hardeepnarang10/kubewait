@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubewait-sample
+  labels:
+    name: kubewait-sample
+spec:
+  serviceAccountName: kubewait-query-sa
+  containers:
+    - name: kubewait-sample
+      image: hardeepnarang10/kubewait:0.2-alpha
+      imagePullPolicy: IfNotPresent
+      args:
+        - --service=sample-service,default
+        - --interval=3s
+        - --timeout=1m
+      resources:
+        limits:
+          memory: 128Mi
+          cpu: 50m
+  restartPolicy: OnFailure

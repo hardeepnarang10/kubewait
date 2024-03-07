@@ -1,0 +1,32 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kubewait-query-role
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["list"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubewait-query-sa
+  namespace: default
+automountServiceAccountToken: true
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kubewait-query-binding
+  namespace: default
+roleRef:
+  kind: Role
+  name: kubewait-query-role
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: kubewait-query-sa
+  namespace: default
